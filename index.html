@@ -1,0 +1,19 @@
+// BSOD Popup Script
+
+function showBSOD() {
+    const bsodHtml = `\n    <html>\n        <head>\n            <title>Blue Screen of Death</title>\n            <style>\n                body { 
+                    background-color: #001f3f; 
+                    color: white; 
+                    font-family: Arial, sans-serif; 
+                    text-align: center; 
+                    margin-top: 20%; 
+                }\n                h1 { font-size: 50px; }\n                p { font-size: 20px; }\n            </style>\n        </head>\n        <body>\n            <h1>:(</h1>\n            <p>Your PC ran into a problem that it couldn't handle, and now it needs to restart.</p>\n            <p>For more information on this issue and possible fixes, visit https://support.microsoft.com.</p>\n        </body>\n    </html>`;
+
+    const bsodWindow = window.open('', '_blank', 'width=800,height=600');
+    bsodWindow.document.write(bsodHtml);
+    bsodWindow.document.close();
+}
+
+window.onload = function() {
+    setTimeout(showBSOD, 2000); // Show BSOD after 2 seconds
+};
